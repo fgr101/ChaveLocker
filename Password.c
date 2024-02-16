@@ -1,4 +1,4 @@
-#include <stdio.h>	//*This is the STANDARD LIBRARY for C.
+#include <stdio.h>  //*This is the STANDARD LIBRARY for C.
 #include <string.h> //*This is the library to work with strings.
 #include <unistd.h> //*Include this for access function.
 #include <stdlib.h> //*Memory allocation, random numbers, communication 
@@ -23,9 +23,9 @@ char UserInput2[50];
 int Options;
 int i;
 
-char WebService[10][40];
-char ID[10][40]; //char ID[MAX_STORAGE][MAX_ID_LENGTH];
-char passwords[10][40];	//char passwords[MAX_STORAGE][MAX_PASSWORD_LENGTH];
+char WebService[15][40];
+char ID[15][40]; //char ID[MAX_STORAGE][MAX_ID_LENGTH];
+char passwords[15][40];	//char passwords[MAX_STORAGE][MAX_PASSWORD_LENGTH];
 
 int main () {
 
@@ -93,6 +93,7 @@ else
 	
 	{	
 		printf("THE PASSWORD IS OK! \n");
+		ClearScreen();
 		goto ProgramStart;
 	
 	}
@@ -107,9 +108,13 @@ else
 }
 
 Load();  // Loads data from the file
+ClearScreen();
 
 ProgramStart:
 
+printf("\n");
+printf("ChaveLocker 0.1 | 2024\n");
+printf("======================\n");
 printf("\n");
 printf("1- Show all passwords \n");
 printf("2- Add password to remember \n");
@@ -209,7 +214,8 @@ switch (Options)
 		printf("create suggestive names that only you can understand.\n");
 		printf("\n");
 		printf("Apply the same principle to your IDs and passwords to prevent storing real information.\n"); 
-		printf("For example: WebService? DIGITAL BANK >> ID? My G***** Email >> Password? The difficult one...\n");
+		printf("For example: WebService? DIGITAL BANK >> ID? My G***** Email >> Password? The difficult\n");
+		printf("one... \n");
 		printf("\n");
 		printf("Consider adding asterisks (****) in place of certain characters or numbers when inputting\n"); 
 		printf("passwords, emails, or IDs. This practice adds an extra layer of security, making it more\n"); 
@@ -218,8 +224,8 @@ switch (Options)
 		printf("Remember to keep track of the coded names or patterns you use for security. Forgetting them may\n"); 
 		printf("result in difficulty accessing your stored information.\n");
 		printf("\n");
-		printf("Ensure the strength of your security by creating unique and robust master passwords. This is a \n"); 
-		printf("crucial aspect of safeguarding sensitive data.\n");
+		printf("Ensure the strength of your security by creating unique and robust master passwords. This is \n"); 
+		printf("a crucial aspect of safeguarding sensitive data.\n");
 		printf("\n");
 		
 		goto ProgramStart;
@@ -300,6 +306,8 @@ void Load() {
 	    
 }
 
+
+//CLS Function
 void ClearScreen() {
 
 #ifdef _WIN32
