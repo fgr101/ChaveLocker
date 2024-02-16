@@ -1,12 +1,15 @@
-#include <stdio.h>	// This is the STANDARD LIBRARY for C.
-#include <string.h> // This is the library to work with strings.
-#include <unistd.h> // Include this for access function.
+#include <stdio.h>	//*This is the STANDARD LIBRARY for C.
+#include <string.h> //*This is the library to work with strings.
+#include <unistd.h> //*Include this for access function.
+#include <stdlib.h> //*Memory allocation, random numbers, communication 
+                    // with the environment, and other basic operations.
 
 FILE *fptr; // Declare the file pointer globally
 
 // Function declaration
 void Save();
 void Load();
+void ClearScreen();
 
 //Constants
 
@@ -186,9 +189,20 @@ switch (Options)
 		
 	case 3:
 		
+		ClearScreen();
+		
+		printf("ABOUT ChaveLocker 0.1 | 2024\n");
+		printf("============================\n");  
+		printf("Created by Fernando G.Ramirez \n");
 		printf("\n");
-		printf("SUGGESTIONS AND TIPS TO ENHANCE SECURITY \n");
-		printf("======================================== \n");
+		printf("This app intends to help you with your passwords, so you don't forget them. Password \n"); 
+		printf("managers are software programs that securely store and manage user passwords, login \n");
+		printf("information, and other sensitive data.\n");
+		
+		
+		printf("\n");
+		printf("SUGGESTIONS TO ENHANCE SECURITY \n");
+		printf("=============================== \n");
 		printf("\n");
 		
 		printf("Enhance your security by avoiding the use of exact website or service names. Instead, \n"); 
@@ -284,4 +298,20 @@ void Load() {
 
 	fclose(fptr);
 	    
+}
+
+void ClearScreen() {
+
+#ifdef _WIN32
+    
+    // Windows
+    system("cls");
+
+#else
+    
+    // Unix-like systems
+    system("clear");
+
+#endif
+
 }
