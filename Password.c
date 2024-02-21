@@ -10,6 +10,7 @@ FILE *fptr; // Declare the file pointer globally
 void Save();
 void Load();
 void ClearScreen();
+void ShowPasswords();
 
 //Constants
 
@@ -119,7 +120,9 @@ printf("\n");
 printf("1- Show all passwords \n");
 printf("2- Add password to remember \n");
 printf("3- Advice \n");
-printf("4- Exit \n");
+printf("4- Delete Speciffic Password \n");
+printf("5- Delete All Passwords \n");
+printf("6- Exit \n");
 printf("\n");
 
 scanf("%d", &Options);
@@ -129,27 +132,25 @@ scanf("%d", &Options);
 Using && (AND) operator --> if (age >= 18 && height >= 160) {...
 Using || (OR) operator -->  if (age < 16 || height < 140) {... */
 
-switch (Options)
-
-{
+switch (Options) {
+	
 	case 1:
 		
-		printf("\n");
+		//printf("\n");
 		
-		for (i = 0; i < MAX_STORAGE; i++) {
+		//for (i = 0; i < MAX_STORAGE; i++) {
 			
-			if (strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") != 0) {
+			//if (strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") != 0) {
 						
-				printf("%s | ", WebService[i]);
-				printf("%s | ", ID[i]);
-				printf("%s \n", passwords[i]);
+				//printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
 			
-			}
+			//}
 		
-		}
+		//}
 		
-		printf("\n");
+		//printf("\n");
 		
+		ShowPasswords();
 		goto ProgramStart;
 		
 	case 2:
@@ -178,7 +179,7 @@ switch (Options)
 		
 		for (i = 0; i < MAX_STORAGE; i++) {
 			
-			if (strcmp(ID[i], "") == 0 && strcmp(passwords[i], "") == 0) {
+			if (strcmp(WebService[i], "") == 0 && strcmp(ID[i], "") == 0 && strcmp(passwords[i], "") == 0) {
 			
 				strcpy(WebService[i], UserInput0);
 				strcpy(ID[i], UserInput1);
@@ -229,8 +230,41 @@ switch (Options)
 		printf("\n");
 		
 		goto ProgramStart;
-		
+	
+	
 	case 4:
+		
+		printf("\n");
+		
+		for (i = 0; i < MAX_STORAGE; i++) {
+				
+				if (strcmp(WebService[i], "") > 0 && strcmp(ID[i], "") > 0 && strcmp(passwords[i], "") > 0) {
+				
+					printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
+														
+				}
+		}
+		
+		goto ProgramStart;		
+		//return 0;
+		
+	case 5: // DELETE ALL IDs & PASSWORDS.
+		
+		for (i = 0; i < MAX_STORAGE; i++) {
+			
+			strcpy(WebService[i], "");
+			strcpy(ID[i], "");
+			strcpy(passwords[i], "");
+				
+		}
+		
+		printf("\n");
+		printf("All IDs and Passwords have been deleted. \n");
+		printf("\n");
+		
+		goto ProgramStart;
+		
+	case 6:
 	
 		Save();
 		return 0;
@@ -323,3 +357,30 @@ void ClearScreen() {
 #endif
 
 }
+
+void ShowPasswords() {
+	
+		printf("\n");
+		
+		for (i = 0; i < MAX_STORAGE; i++) {
+			
+			if (strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") != 0) {
+						
+				printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
+			
+			}
+		
+		}
+		
+		printf("\n");
+
+}
+
+
+//=====================================================================
+
+//NOTES:
+
+// Deleting PASSWORDS and IDs [NOT FINISHED] [25%]
+
+//=====================================================================
