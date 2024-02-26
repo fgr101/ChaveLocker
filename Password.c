@@ -11,6 +11,7 @@ void Save();
 void Load();
 void ClearScreen();
 void ShowPasswords();
+void AskForPassword();
 
 //Constants
 
@@ -85,26 +86,29 @@ if (strcmp(MasterKey, "") == 0)
 else
 
 {
-	printf("What is the MASTER PASSWORD: \n");
-	scanf("%49s", &UserInput0);
 	
-	int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
+	AskForPassword();
 	
-	if (comparison == 0)
+	//printf("What is the MASTER PASSWORD: \n");
+	//scanf("%49s", &UserInput0);
 	
-	{	
-		printf("THE PASSWORD IS OK! \n");
-		ClearScreen();
-		goto ProgramStart;
+	//int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
 	
-	}
+	//if (comparison == 0)
 	
-	else 
+	//{	
+		//printf("THE PASSWORD IS OK! \n");
+		//ClearScreen();
+		//goto ProgramStart;
 	
-	{
-		printf("WRONG PASSWORD.");
-		return 0;
-	}
+	//}
+	
+	//else 
+	
+	//{
+		//printf("WRONG PASSWORD.");
+		//return 0;
+	//}
 	
 }
 
@@ -150,6 +154,7 @@ switch (Options) {
 		
 		//printf("\n");
 		
+		AskForPassword();
 		ShowPasswords();
 		goto ProgramStart;
 		
@@ -234,33 +239,61 @@ switch (Options) {
 	
 	case 4:
 		
-		printf("\n");
+		//printf("\n");
 		
-		for (i = 0; i < MAX_STORAGE; i++) {
-				
-				if (strcmp(WebService[i], "") > 0 && strcmp(ID[i], "") > 0 && strcmp(passwords[i], "") > 0) {
-				
-					printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
-														
-				}
-		}
+		//printf ("Are you sure you want to delete all the information stored? \n");
+		//printf("Write YES to confirm the action.\n");
+		//scanf("%4s", &UserInput0);
+		//printf("\n");
+		
+		//if (strcmp(UserInput0, "YES") == 0) {
+		
+			//for (i = 0; i < MAX_STORAGE; i++) {
+					
+					//if (strcmp(WebService[i], "") != 0 && strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") > 0) {
+					
+						//printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
+															
+					//}
+			//}
+		
+		//}
+		
 		
 		goto ProgramStart;		
-		//return 0;
-		
-	case 5: // DELETE ALL IDs & PASSWORDS.
-		
-		for (i = 0; i < MAX_STORAGE; i++) {
-			
-			strcpy(WebService[i], "");
-			strcpy(ID[i], "");
-			strcpy(passwords[i], "");
 				
-		}
+	case 5: // DELETE ALL IDs & PASSWORDS.
+	
+		AskForPassword();
+	
+		printf("\n");
+		printf ("Are you sure you want to delete all the information stored? \n");
+		printf("Write YES to confirm the action.\n");
 		
 		printf("\n");
-		printf("All IDs and Passwords have been deleted. \n");
+		scanf("%4s", &UserInput0);
 		printf("\n");
+		
+		if (strcasecmp(UserInput0, "YES") == 0) {
+		
+			for (i = 0; i < MAX_STORAGE; i++) {
+			
+				strcpy(WebService[i], "");
+				strcpy(ID[i], "");
+				strcpy(passwords[i], "");
+					
+			}
+		
+			printf("\n");
+			printf("All IDs and Passwords have been deleted. \n");
+			printf("\n");
+		
+		} else {
+			
+			printf("\n"); 
+			printf("The action ha been canceled... \n");
+			
+			}
 		
 		goto ProgramStart;
 		
@@ -377,10 +410,50 @@ void ShowPasswords() {
 }
 
 
-//=====================================================================
+void AskForPassword() {
+	
+	printf("\n");
+	printf("What is the MASTER PASSWORD: \n");
+	scanf("%49s", &UserInput0);
+	
+	int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
+	
+	if (comparison == 0)
+	
+	{	
+		printf("CORRECT PASSWORD. ACCESS CONFIRMED.\n");
+		//ClearScreen();
+		return;
+	
+	}
+	
+	else 
+	
+	{
+		printf("WRONG PASSWORD. ACCESS DENIED.\n");
+		exit(0); //Exits the program.
+	}
+
+}
+
+//======================================================================
 
 //NOTES:
 
-// Deleting PASSWORDS and IDs [NOT FINISHED] [25%]
+// TO DO
+// =====
 
-//=====================================================================
+// Deleting PASSWORDS and IDs [NOT FINISHED] [45%] --> Delete INDIVIDUAL
+// and SPECIFFIC passwords.
+
+// ASK PASSWORD, verify password --> Sub Function - Create and implement 
+// its use along the whole program.
+
+// FINISHED
+// ========
+
+// Version 0.2
+
+// - Delete ALL passwords - FINISHED [75%]
+
+//======================================================================
