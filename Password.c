@@ -124,8 +124,8 @@ printf("\n");
 printf("1- Show all passwords \n");
 printf("2- Add password to remember \n");
 printf("3- Advice \n");
-printf("4- Delete Speciffic Password \n");
-printf("5- Delete All Passwords \n");
+printf("4- Delete an speciffic password \n");
+printf("5- Delete all passwords \n");
 printf("6- Exit \n");
 printf("\n");
 
@@ -139,20 +139,6 @@ Using || (OR) operator -->  if (age < 16 || height < 140) {... */
 switch (Options) {
 	
 	case 1:
-		
-		//printf("\n");
-		
-		//for (i = 0; i < MAX_STORAGE; i++) {
-			
-			//if (strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") != 0) {
-						
-				//printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
-			
-			//}
-		
-		//}
-		
-		//printf("\n");
 		
 		AskForPassword();
 		ShowPasswords();
@@ -244,26 +230,9 @@ switch (Options) {
 	
 	case 4:
 		
-		//printf("\n");
-		
-		//printf ("Are you sure you want to delete all the information stored? \n");
-		//printf("Write YES to confirm the action.\n");
-		//scanf("%4s", &UserInput0);
-		//printf("\n");
-		
-		//if (strcmp(UserInput0, "YES") == 0) {
-		
-			//for (i = 0; i < MAX_STORAGE; i++) {
-					
-					//if (strcmp(WebService[i], "") != 0 && strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") > 0) {
-					
-						//printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
-															
-					//}
-			//}
-		
-		//}
-		
+		ClearScreen();
+		AskForPassword();
+		ShowPasswords();
 		
 		goto ProgramStart;		
 				
@@ -295,7 +264,7 @@ switch (Options) {
 		
 		} else {
 			
-			printf("\n"); 
+			//printf("\n"); 
 			printf("The action ha been canceled... \n");
 			
 			}
@@ -382,7 +351,6 @@ void Load() {
 	    
 }
 
-
 //CLS Function
 void ClearScreen() {
 
@@ -418,7 +386,6 @@ void ShowPasswords() {
 
 }
 
-
 void AskForPassword() {
 	
 	
@@ -448,6 +415,8 @@ void AskForPassword() {
 				exit(0); //Exits the program.
 			}
 				
+			printf("Wrong password. Try again...");
+		
 		}	
 	
 	}
@@ -467,11 +436,16 @@ void AskForPassword() {
 // ASK PASSWORD, verify password --> Sub Function - Create and implement 
 // its use along the whole program.
 
+// DELETE an speciffic WebService, ID, and Password.
+// EDIT an speciffic WebService, ID, and Password.
+
 // FINISHED
 // ========
 
 // Version 0.2
 
 // - Delete ALL passwords - FINISHED [75%]
+// - Verify Password when accessing important areas. [100%]
+
 
 //======================================================================
