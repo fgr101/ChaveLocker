@@ -233,7 +233,12 @@ switch (Options) {
 		printf("Ensure the strength of your security by creating unique and robust master passwords. This is \n"); 
 		printf("a crucial aspect of safeguarding sensitive data.\n");
 		printf("\n");
-		
+		printf("Enhance the security of this program by keeping it hidden in a randomly chosen location on \n");
+		printf("your hard drive. Place it in a folder with a unique and unrelated name that only you know. \n");
+		printf("Additionally, rename the program to something obscure and unrelated to passwords, such as a \n");
+		printf("random sequence. Avoid using terms like 'PasswordManager' or 'Key' to make it less conspicuous. \n");
+		printf("Choose a name that is memorable to you but doesn't reveal the program's purpose. \n");
+
 		goto ProgramStart;
 	
 	
@@ -337,6 +342,8 @@ void Save() {
 
 
 	fclose(fptr);
+	
+	ClearScreen();
 		
 		
 }
@@ -370,6 +377,8 @@ void Load() {
 	}
 
 	fclose(fptr);
+	
+	ClearScreen();
 	    
 }
 
@@ -412,28 +421,37 @@ void ShowPasswords() {
 
 void AskForPassword() {
 	
-	printf("\n");
-	printf("What is the MASTER PASSWORD: \n");
-	scanf("%49s", &UserInput0);
 	
-	int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
+	for (i = 0; i < 3; i++) {
 	
-	if (comparison == 0)
-	
-	{	
-		printf("CORRECT PASSWORD. ACCESS CONFIRMED.\n");
-		//ClearScreen();
-		return;
+		printf("\n");
+		printf("What is the MASTER PASSWORD: \n");
+		scanf("%49s", &UserInput0);
+		printf("\n");
+		
+		int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
+		
+		if (comparison == 0)
+		
+		{	
+			printf("CORRECT PASSWORD. ACCESS CONFIRMED.\n");
+			//ClearScreen();
+			return;
+		
+		}
+		
+		else {
+			
+			if (i == 2) {
+				
+				printf("WRONG PASSWORD. ACCESS DENIED.\n");
+				exit(0); //Exits the program.
+			}
+				
+		}	
 	
 	}
 	
-	else 
-	
-	{
-		printf("WRONG PASSWORD. ACCESS DENIED.\n");
-		exit(0); //Exits the program.
-	}
-
 }
 
 //======================================================================
