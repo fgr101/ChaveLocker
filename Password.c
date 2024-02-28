@@ -227,14 +227,38 @@ switch (Options) {
 
 		goto ProgramStart;
 	
-	
 	case 4:
 		
 		ClearScreen();
 		AskForPassword();
 		ShowPasswords();
 		
-		goto ProgramStart;		
+		printf("What slot would you like to delete? \n");
+		scanf("%d", &Options);
+		
+		printf("\n");
+		printf ("Are you sure you want to delete the information stored in that slot? \n");
+		printf("Write YES to confirm the action: ");
+		scanf("%4s", &UserInput0);
+				
+		if (strcasecmp(UserInput0, "YES") == 0) {
+		
+			strcpy(WebService[Options], "");
+			strcpy(ID[Options], "");
+			strcpy(passwords[Options], "");
+
+			printf("\n");
+			printf("The speciffic ID and Password has been deleted. \n");
+			printf("\n");
+		
+		} else {
+			
+			printf("\n"); 
+			printf("The action ha been canceled... \n");
+			
+			}
+		
+		goto ProgramStart;
 				
 	case 5: // DELETE ALL IDs & PASSWORDS.
 	
@@ -242,12 +266,9 @@ switch (Options) {
 	
 		printf("\n");
 		printf ("Are you sure you want to delete all the information stored? \n");
-		printf("Write YES to confirm the action.\n");
-		
-		printf("\n");
+		printf("Write YES to confirm the action: ");
 		scanf("%4s", &UserInput0);
-		printf("\n");
-		
+				
 		if (strcasecmp(UserInput0, "YES") == 0) {
 		
 			for (i = 0; i < MAX_STORAGE; i++) {
@@ -264,7 +285,7 @@ switch (Options) {
 		
 		} else {
 			
-			//printf("\n"); 
+			printf("\n"); 
 			printf("The action ha been canceled... \n");
 			
 			}
