@@ -12,6 +12,7 @@ void Load();
 void ClearScreen();
 void ShowPasswords();
 void AskForPassword();
+void EditPassword();
 
 //Constants
 
@@ -23,6 +24,7 @@ char UserInput0[50];
 char UserInput1[50];
 char UserInput2[50];
 int Options;
+int SlotToEdit;
 int i;
 
 char WebService[15][40];
@@ -118,15 +120,17 @@ ClearScreen();
 ProgramStart:
 
 printf("\n");
-printf("ChaveLocker 0.1 | 2024\n");
-printf("======================\n");
+printf("########################## \n");
+printf("| ChaveLocker 0.2 | 2024 | \n");
+printf("########################## \n");
 printf("\n");
 printf("1- Show all passwords \n");
 printf("2- Add password to remember \n");
 printf("3- Advice \n");
 printf("4- Delete an speciffic password \n");
 printf("5- Delete all passwords \n");
-printf("6- Exit \n");
+printf ("6- Edit Password \n");
+printf("7- Exit \n");
 printf("\n");
 
 scanf("%d", &Options);
@@ -291,8 +295,14 @@ switch (Options) {
 			}
 		
 		goto ProgramStart;
-		
+	
+	
 	case 6:
+	
+		EditPassword();
+		goto ProgramStart;
+		
+	case 7:
 	
 		Save();
 		return 0;
@@ -409,6 +419,7 @@ void ShowPasswords() {
 
 void AskForPassword() {
 	
+	ClearScreen();
 	
 	for (i = 0; i < 3; i++) {
 	
@@ -416,14 +427,15 @@ void AskForPassword() {
 		printf("What is the MASTER PASSWORD: \n");
 		scanf("%49s", &UserInput0);
 		printf("\n");
-		
+					
 		int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
 		
 		if (comparison == 0)
 		
 		{	
-			printf("CORRECT PASSWORD. ACCESS CONFIRMED.\n");
-			//ClearScreen();
+			ClearScreen();
+			printf(">> CORRECT PASSWORD. ACCESS CONFIRMED <<\n");
+			printf("\n");
 			return;
 		
 		}
@@ -432,17 +444,81 @@ void AskForPassword() {
 			
 			if (i == 2) {
 				
-				printf("WRONG PASSWORD. ACCESS DENIED.\n");
+				printf(">> WRONG PASSWORD. ACCESS DENIED. PROGRAM ENDED <<\n");
+				printf("\n");
 				exit(0); //Exits the program.
 			}
 				
 			printf("Wrong password. Try again...");
-		
+			
 		}	
 	
 	}
 	
 }
+
+void EditPassword() {
+	
+	ClearScreen();
+	AskForPassword();
+	ShowPasswords();
+	
+	printf("What slot would you like to edit?");
+	scanf("%d", &SlotToEdit);
+	printf("\n");
+	
+	printf("[%d] %s | %s | %s \n", SlotToEdit, WebService[SlotToEdit], ID[SlotToEdit], passwords[SlotToEdit]);
+	
+	EditAskAgain:
+	
+	printf("\n");
+	printf("[1] Edit Web and Service [2] Edit ID [3] Edit Password [7] EXIT \n");
+	scanf("%d", &Options);
+	
+	switch(Options) {
+	
+		case 1:
+		
+			printf("\n");
+			printf("Service or Website:\n");
+			scanf("%49s", UserInput0);
+			
+			strcpy(WebService[SlotToEdit], UserInput0);
+			break;
+			
+		case 2:
+		
+			printf("\n");
+			printf("ID to Remember:\n");
+			scanf("%49s", UserInput1);
+			
+			strcpy(ID[SlotToEdit], UserInput1);
+			break;
+			
+		case 3:
+				
+			printf("\n");
+			printf("Password to Remember:\n");
+			scanf("%49s", UserInput2);
+				
+			strcpy(passwords[SlotToEdit], UserInput2);
+			break;
+			
+		case 7:
+			
+			break;
+			
+		default:
+		
+			printf("\n");
+			printf("Choose one of the options above: 1, 2 or 3. \n");
+			goto EditAskAgain;
+	}					
+	
+	Save();		
+	return;
+	
+	}
 
 //======================================================================
 
@@ -450,6 +526,8 @@ void AskForPassword() {
 
 // TO DO
 // =====
+
+// EDIT PASSWORDS
 
 // Deleting PASSWORDS and IDs [NOT FINISHED] [45%] --> Delete INDIVIDUAL
 // and SPECIFFIC passwords.
