@@ -1,18 +1,29 @@
 #include <stdio.h>  //*This is the STANDARD LIBRARY for C.
+#include <ctype.h>  // to use _getch()
 #include <string.h> //*This is the library to work with strings.
-#include <unistd.h> //*Include this for access function.
+#include <unistd.h> //*Include this for access function. Required for sleep() on Unix-like systems
 #include <stdlib.h> //*Memory allocation, random numbers, communication 
                     // with the environment, and other basic operations.
+                    
+#ifdef _WIN32
+#include <windows.h> // Required for Sleep() on Windows 
+#endif
 
 FILE *fptr; // Declare the file pointer globally
 
 // Function declaration
+
 void Save();
 void Load();
 void ClearScreen();
 void ShowPasswords();
 void AskForPassword();
 void EditPassword();
+void WaitKey();
+void WaitSleep();
+void ChangeMasterKey();
+
+void MenuSettings();
 
 //Constants
 
@@ -20,6 +31,7 @@ const int MAX_STORAGE = 15;
 
 // Global Variables
 char MasterKey[30]; 		// STRING Declaration
+char input;
 char UserInput0[50];
 char UserInput1[50];
 char UserInput2[50];
@@ -72,11 +84,6 @@ if (fptr == NULL)
 
 MasterKeyINI:
 
-// DELETE THE NEXT LATER:
-// Initialization using strcpy from string.h library
-
-strcpy(MasterKey, "1234");
-
 if (strcmp(MasterKey, "") == 0)
 	
 {
@@ -91,27 +98,6 @@ else
 	
 	AskForPassword();
 	
-	//printf("What is the MASTER PASSWORD: \n");
-	//scanf("%49s", &UserInput0);
-	
-	//int comparison = strcmp(MasterKey, UserInput0); //Compares the value of 2 different string variables.
-	
-	//if (comparison == 0)
-	
-	//{	
-		//printf("THE PASSWORD IS OK! \n");
-		//ClearScreen();
-		//goto ProgramStart;
-	
-	//}
-	
-	//else 
-	
-	//{
-		//printf("WRONG PASSWORD.");
-		//return 0;
-	//}
-	
 }
 
 Load();  // Loads data from the file
@@ -121,17 +107,30 @@ ProgramStart:
 
 printf("\n");
 printf("########################## \n");
-printf("| ChaveLocker 0.2 | 2024 | \n");
+printf("| ChaveLocker 0.3 | 2024 | \n");
 printf("########################## \n");
 printf("\n");
-printf("1- Show all passwords \n");
-printf("2- Add password to remember \n");
+
+WaitSleep();
+
+printf("1- Show Passwords \n");
+WaitSleep();
+printf("2- Add Password to Remember \n");
+WaitSleep();
 printf("3- Advice \n");
+WaitSleep();
 printf("4- Delete an speciffic password \n");
+WaitSleep();
+printf("14- Setting \n");
+WaitSleep();
 printf("5- Delete all passwords \n");
+WaitSleep();
 printf ("6- Edit Password \n");
+WaitSleep();
 printf("7- Exit \n");
 printf("\n");
+WaitSleep();
+
 
 scanf("%d", &Options);
 
@@ -192,43 +191,62 @@ switch (Options) {
 		
 		ClearScreen();
 		
-		printf("ABOUT ChaveLocker 0.1 | 2024\n");
+		printf("ABOUT ChaveLocker 0.2 | 2024\n");
 		printf("============================\n");  
-		printf("Created by Fernando G.Ramirez \n");
-		printf("\n");
+		printf("Created by Fernando G.Ramirez \n\n");
+		
+		WaitSleep();
+		
 		printf("This app intends to help you with your passwords, so you don't forget them. Password \n"); 
 		printf("managers are software programs that securely store and manage user passwords, login \n");
-		printf("information, and other sensitive data.\n");
+		printf("information, and other sensitive data.\n\n");
 		
+		WaitSleep();
 		
-		printf("\n");
 		printf("SUGGESTIONS TO ENHANCE SECURITY \n");
 		printf("=============================== \n");
 		printf("\n");
 		
+		WaitSleep();
+		
 		printf("Enhance your security by avoiding the use of exact website or service names. Instead, \n"); 
-		printf("create suggestive names that only you can understand.\n");
-		printf("\n");
+		printf("create suggestive names that only you can understand.\n\n");
+				
+		WaitSleep();
+		
 		printf("Apply the same principle to your IDs and passwords to prevent storing real information.\n"); 
 		printf("For example: WebService? DIGITAL BANK >> ID? My G***** Email >> Password? The difficult\n");
-		printf("one... \n");
-		printf("\n");
+		printf("one... \n\n");
+				
+		WaitSleep();
+		
 		printf("Consider adding asterisks (****) in place of certain characters or numbers when inputting\n"); 
 		printf("passwords, emails, or IDs. This practice adds an extra layer of security, making it more\n"); 
-		printf("challenging for others to decipher your personal data.\n");
-		printf("\n");
+		printf("challenging for others to decipher your personal data. \n\n");
+		
+		WaitSleep();
+		
 		printf("Remember to keep track of the coded names or patterns you use for security. Forgetting them may\n"); 
-		printf("result in difficulty accessing your stored information.\n");
-		printf("\n");
+		printf("result in difficulty accessing your stored information.\n\n");
+		
+		WaitSleep();
+				
 		printf("Ensure the strength of your security by creating unique and robust master passwords. This is \n"); 
-		printf("a crucial aspect of safeguarding sensitive data.\n");
-		printf("\n");
+		printf("a crucial aspect of safeguarding sensitive data.\n\n");
+		
+		WaitSleep();
+		
 		printf("Enhance the security of this program by keeping it hidden in a randomly chosen location on \n");
 		printf("your hard drive. Place it in a folder with a unique and unrelated name that only you know. \n");
 		printf("Additionally, rename the program to something obscure and unrelated to passwords, such as a \n");
 		printf("random sequence. Avoid using terms like 'PasswordManager' or 'Key' to make it less conspicuous. \n");
 		printf("Choose a name that is memorable to you but doesn't reveal the program's purpose. \n");
 
+		goto ProgramStart;
+	
+	case 14:
+	
+		MenuSettings();
 		goto ProgramStart;
 	
 	case 4:
@@ -307,7 +325,6 @@ switch (Options) {
 		Save();
 		return 0;
 
-	
 }
 
 return 0;
@@ -331,13 +348,13 @@ void Save() {
 
     // Write variables to the file
     
-    fprintf(fptr, "%29s", MasterKey);
+    fprintf(fptr, "%29s\n", MasterKey);
     
     for (i = 0; i < MAX_STORAGE; i++) { // FOR..I loop to save passwords and IDs.
         
         fprintf(fptr, "%49s", WebService[i]);
         fprintf(fptr, "%49s", ID[i]);
-        fprintf(fptr, "%49s", passwords[i]);
+        fprintf(fptr, "%49s\n", passwords[i]);
     }
 
 
@@ -366,13 +383,13 @@ void Load() {
 
 	// Read variables from the file
 		
-	fscanf(fptr, "%29s", &MasterKey); // adjust buffer size based on your needs
+	fscanf(fptr, "%29s\n", &MasterKey); // adjust buffer size based on your needs
 
 	for (i = 0; i < MAX_STORAGE; i++) { // Corrected loop condition
 			
 		fscanf(fptr, "%49s", &WebService[i]);	
 		fscanf(fptr, "%49s", &ID[i]);
-		fscanf(fptr, "%49s", &passwords[i]);
+		fscanf(fptr, "%49s\n", &passwords[i]);
 	
 	}
 
@@ -408,7 +425,8 @@ void ShowPasswords() {
 			if (strcmp(ID[i], "") != 0 && strcmp(passwords[i], "") != 0) {
 						
 				printf("[%d] %s | %s | %s \n", i, WebService[i], ID[i], passwords[i]);
-			
+				WaitSleep();
+				
 			}
 		
 		}
@@ -467,6 +485,10 @@ void EditPassword() {
 	scanf("%d", &SlotToEdit);
 	printf("\n");
 	
+	
+	ShowEditScreen:
+	ClearScreen();
+	
 	printf("[%d] %s | %s | %s \n", SlotToEdit, WebService[SlotToEdit], ID[SlotToEdit], passwords[SlotToEdit]);
 	
 	EditAskAgain:
@@ -506,8 +528,9 @@ void EditPassword() {
 			
 		case 7:
 			
-			break;
-			
+			Save();
+			return;
+
 		default:
 		
 			printf("\n");
@@ -515,10 +538,112 @@ void EditPassword() {
 			goto EditAskAgain;
 	}					
 	
-	Save();		
-	return;
+	goto ShowEditScreen;
+		
+}
 	
+void WaitKey() {
+	
+	// Loop until a key is pressed
+			
+	do {
+			
+		input = getchar();
+		
+	} while (input == '\n'); // Ignore newline characters
+
+	printf("\n Key '%c' pressed. Program continues...\n", input);
+
+	return;
+
+}
+
+void WaitSleep() {
+	
+    // Pause the program for 1 second
+    
+    #ifdef _WIN32
+    Sleep(200); // Sleep for 1000 milliseconds (1 second) on Windows
+    
+    #else
+    sleep(0.2); // Sleep for 1 second on Unix-like systems
+    
+    #endif
+
+    return;
+
+}
+
+void ChangeMasterKey() {
+	
+	ChangeMasterKey:
+	
+	printf("Input NEW MASTER KEY: ");
+	scanf("%49s", &UserInput0);
+	printf("Repeat NEW MASTER KEY: ");
+	scanf("%49s", &UserInput1);
+		
+	int comparison = strcmp(UserInput0, UserInput1); //Compares the value of 2 different string variables.
+		
+		if (comparison == 0) {	
+			
+			strcpy(MasterKey, UserInput0);
+			printf(">> SUCCESS! MASTER KEY CHANGED! <<\n");
+			printf("New Master Key is: %s\n\n", MasterKey);
+			Save();
+			WaitSleep();
+			return;
+		
+		}
+		
+		else {
+			
+			
+			ClearScreen();				
+			printf(">> CHARACTERS DON'T MATCH. TRY AGAIN << \n\n");
+			WaitSleep();
+			goto ChangeMasterKey;
+			
+		}	
+	
+}
+	
+
+void MenuSettings() {
+		
+	ClearScreen();
+	
+	printf("\n");
+	printf("########################## \n");
+	printf("| ChaveLocker 0.3 | 2024 | \n");
+	printf("########################## \n");
+	printf("\n");
+
+	WaitSleep();
+	
+	printf("1- Change Master Key \n");
+	printf("7- Exit \n");
+	printf("\n");
+
+	scanf("%d", &Options);
+	
+	switch(Options){
+		
+		case 1:
+		
+			AskForPassword();
+			ChangeMasterKey();
+			return;
+		
+		case 7:
+		
+			ClearScreen();
+			return;
+		
 	}
+		
+}
+
 
 //======================================================================
 
@@ -526,8 +651,6 @@ void EditPassword() {
 
 // TO DO
 // =====
-
-// EDIT PASSWORDS
 
 // Deleting PASSWORDS and IDs [NOT FINISHED] [45%] --> Delete INDIVIDUAL
 // and SPECIFFIC passwords.
@@ -541,10 +664,18 @@ void EditPassword() {
 // FINISHED
 // ========
 
+// Version 0.3
+
+// - 'Change MasterKey' --> Ask for MasterKey twice and verify if both 
+//   inputs match.
+// - 'Change MasterKey' option [100%] 
+// - MENU section --> SETTINGS [OK]
+
 // Version 0.2
 
 // - Delete ALL passwords - FINISHED [75%]
 // - Verify Password when accessing important areas. [100%]
+// EDIT PASSWORDS [100%]
 
 
 //======================================================================
