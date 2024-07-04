@@ -22,8 +22,12 @@ void EditPassword();
 void WaitKey();
 void WaitSleep();
 void ChangeMasterKey();
+void AddPasswordToRemember();
 
 void MenuSettings();
+void MenuPasswords();
+void DeleteSpecificPassword();
+void DeleteAllPasswords();
 
 //Constants
 
@@ -111,21 +115,13 @@ printf("| ChaveLocker 0.3 | 2024 | \n");
 printf("########################## \n");
 printf("\n");
 
-WaitSleep();
 
-printf("1- Show Passwords \n");
 WaitSleep();
-printf("2- Add Password to Remember \n");
+printf("1- Manage Passwords \n");
+WaitSleep();
+printf("2- Settings \n");
 WaitSleep();
 printf("3- Advice \n");
-WaitSleep();
-printf("4- Delete an speciffic password \n");
-WaitSleep();
-printf("14- Setting \n");
-WaitSleep();
-printf("5- Delete all passwords \n");
-WaitSleep();
-printf ("6- Edit Password \n");
 WaitSleep();
 printf("7- Exit \n");
 printf("\n");
@@ -142,56 +138,20 @@ Using || (OR) operator -->  if (age < 16 || height < 140) {... */
 switch (Options) {
 	
 	case 1:
-		
-		AskForPassword();
-		ShowPasswords();
+	
+		MenuPasswords();
 		goto ProgramStart;
 		
 	case 2:
 	
-		printf("\n");
-		printf("Service or Website:\n");
-		scanf("%49s", UserInput0);
-		
-		printf("\n");
-		printf("The service or website to be stored is %s.", UserInput0);
-		
-		printf("\n");
-		printf("ID to Remember:\n");
-		scanf("%49s", UserInput1);
-		
-		printf("\n");
-		printf("The ID to be stored is %s. \n", UserInput1);
-	
-		printf("\n");
-		printf("Password to Remember:\n");
-		scanf("%49s", UserInput2);
-		
-		printf("\n");
-		printf("The password to be stored is %s. \n", UserInput2);
-		printf("\n");
-		
-		for (i = 0; i < MAX_STORAGE; i++) {
-			
-			if (strcmp(WebService[i], "") == 0 && strcmp(ID[i], "") == 0 && strcmp(passwords[i], "") == 0) {
-			
-				strcpy(WebService[i], UserInput0);
-				strcpy(ID[i], UserInput1);
-				strcpy(passwords[i], UserInput2);
-				break;
-			
-			}
-		
-		}
-		
-		Save();		
+		MenuSettings();
 		goto ProgramStart;
-		
+			
 	case 3:
 		
 		ClearScreen();
 		
-		printf("ABOUT ChaveLocker 0.2 | 2024\n");
+		printf("ABOUT ChaveLocker 0.3 | 2024\n");
 		printf("============================\n");  
 		printf("Created by Fernando G.Ramirez \n\n");
 		
@@ -243,83 +203,7 @@ switch (Options) {
 		printf("Choose a name that is memorable to you but doesn't reveal the program's purpose. \n");
 
 		goto ProgramStart;
-	
-	case 14:
-	
-		MenuSettings();
-		goto ProgramStart;
-	
-	case 4:
-		
-		ClearScreen();
-		AskForPassword();
-		ShowPasswords();
-		
-		printf("What slot would you like to delete? \n");
-		scanf("%d", &Options);
-		
-		printf("\n");
-		printf ("Are you sure you want to delete the information stored in that slot? \n");
-		printf("Write YES to confirm the action: ");
-		scanf("%4s", &UserInput0);
 				
-		if (strcasecmp(UserInput0, "YES") == 0) {
-		
-			strcpy(WebService[Options], "");
-			strcpy(ID[Options], "");
-			strcpy(passwords[Options], "");
-
-			printf("\n");
-			printf("The speciffic ID and Password has been deleted. \n");
-			printf("\n");
-		
-		} else {
-			
-			printf("\n"); 
-			printf("The action ha been canceled... \n");
-			
-			}
-		
-		goto ProgramStart;
-				
-	case 5: // DELETE ALL IDs & PASSWORDS.
-	
-		AskForPassword();
-	
-		printf("\n");
-		printf ("Are you sure you want to delete all the information stored? \n");
-		printf("Write YES to confirm the action: ");
-		scanf("%4s", &UserInput0);
-				
-		if (strcasecmp(UserInput0, "YES") == 0) {
-		
-			for (i = 0; i < MAX_STORAGE; i++) {
-			
-				strcpy(WebService[i], "");
-				strcpy(ID[i], "");
-				strcpy(passwords[i], "");
-					
-			}
-		
-			printf("\n");
-			printf("All IDs and Passwords have been deleted. \n");
-			printf("\n");
-		
-		} else {
-			
-			printf("\n"); 
-			printf("The action ha been canceled... \n");
-			
-			}
-		
-		goto ProgramStart;
-	
-	
-	case 6:
-	
-		EditPassword();
-		goto ProgramStart;
-		
 	case 7:
 	
 		Save();
@@ -331,8 +215,7 @@ return 0;
 
 }
 
-// SAVE Function
-
+//SAVE Function
 void Save() {
 	
 	printf("Saving...");
@@ -365,7 +248,7 @@ void Save() {
 		
 }
 
-// LOAD Function
+//LOAD Function
 void Load() {
 	
 	printf("Loading...");
@@ -494,7 +377,7 @@ void EditPassword() {
 	EditAskAgain:
 	
 	printf("\n");
-	printf("[1] Edit Web and Service [2] Edit ID [3] Edit Password [7] EXIT \n");
+	printf("[1] Edit Web and Service [2] Edit ID [3] Edit Password [7] DONE! \n");
 	scanf("%d", &Options);
 	
 	switch(Options) {
@@ -608,7 +491,6 @@ void ChangeMasterKey() {
 	
 }
 	
-
 void MenuSettings() {
 		
 	ClearScreen();
@@ -622,7 +504,7 @@ void MenuSettings() {
 	WaitSleep();
 	
 	printf("1- Change Master Key \n");
-	printf("7- Exit \n");
+	printf("7- Go Back \n");
 	printf("\n");
 
 	scanf("%d", &Options);
@@ -644,6 +526,178 @@ void MenuSettings() {
 		
 }
 
+void MenuPasswords() {
+		
+
+	ClearScreen();
+	MenuPasswords:
+	
+	printf("\n");
+	printf("########################## \n");
+	printf("| ChaveLocker 0.3 | 2024 | \n");
+	printf("########################## \n");
+	printf("\n");
+	printf("<<<-- MANAGE PASSWORDS -->>>\n\n");
+
+	printf("1- Show Passwords \n");
+	printf("2- Add Password to Remember \n");
+	printf ("3- Edit Password \n");
+	printf("4- Delete an specific password \n");
+	printf("5- Delete all passwords \n");
+	printf("7- Go Back \n");
+	printf("\n");
+	
+	scanf("%d", &Options);
+	
+	switch(Options) {
+		
+		case 1:
+		
+			AskForPassword();
+			ShowPasswords();
+			goto MenuPasswords;
+		
+		case 2:
+		
+			AddPasswordToRemember();
+			goto MenuPasswords;
+			
+		case 3:
+		
+			EditPassword();
+			goto MenuPasswords;
+			
+		case 4:
+		
+			DeleteSpecificPassword();
+			goto MenuPasswords;
+			
+		case 5:
+		
+			DeleteAllPasswords();
+			goto MenuPasswords;
+			
+		case 7:
+		
+			ClearScreen();
+			return;
+		
+	}
+	
+}
+
+void AddPasswordToRemember() {
+	
+		printf("\n");
+		printf("Service or Website:\n");
+		scanf("%49s", UserInput0);
+		
+		printf("\n");
+		printf("The service or website to be stored is %s.", UserInput0);
+		
+		printf("\n");
+		printf("ID to Remember:\n");
+		scanf("%49s", UserInput1);
+		
+		printf("\n");
+		printf("The ID to be stored is %s. \n", UserInput1);
+	
+		printf("\n");
+		printf("Password to Remember:\n");
+		scanf("%49s", UserInput2);
+		
+		printf("\n");
+		printf("The password to be stored is %s. \n", UserInput2);
+		printf("\n");
+		
+		for (i = 0; i < MAX_STORAGE; i++) {
+			
+			if (strcmp(WebService[i], "") == 0 && strcmp(ID[i], "") == 0 && strcmp(passwords[i], "") == 0) {
+			
+				strcpy(WebService[i], UserInput0);
+				strcpy(ID[i], UserInput1);
+				strcpy(passwords[i], UserInput2);
+				break;
+			
+			}
+		
+		}
+		
+		Save();		
+		return;
+		//goto ProgramStart;
+
+	}
+	
+void DeleteSpecificPassword() {
+	
+	ClearScreen();
+	AskForPassword();
+	ShowPasswords();
+		
+	printf("What slot would you like to delete? \n");
+	scanf("%d", &Options);
+		
+	printf("\n");
+	printf ("Are you sure you want to delete the information stored in that slot? \n");
+	printf("Write YES to confirm the action: ");
+	scanf("%4s", &UserInput0);
+				
+	if (strcasecmp(UserInput0, "YES") == 0) {
+		
+		strcpy(WebService[Options], "");
+		strcpy(ID[Options], "");
+		strcpy(passwords[Options], "");
+
+		printf("\n");
+		printf("The speciffic ID and Password has been deleted. \n");
+		printf("\n");
+		
+	} else {
+			
+		printf("\n"); 
+		printf("The action ha been canceled... \n");
+			
+	}
+		
+	return;
+	
+}
+
+//DELETE ALL IDs & PASSWORDS.
+void DeleteAllPasswords() {
+	
+	AskForPassword();
+	
+	printf("\n");
+	printf ("Are you sure you want to delete all the information stored? \n");
+	printf("Write YES to confirm the action: ");
+	scanf("%4s", &UserInput0);
+				
+	if (strcasecmp(UserInput0, "YES") == 0) {
+		
+		for (i = 0; i < MAX_STORAGE; i++) {
+			
+			strcpy(WebService[i], "");
+			strcpy(ID[i], "");
+			strcpy(passwords[i], "");
+					
+		}
+		
+		printf("\n");
+		printf("All IDs and Passwords have been deleted. \n");
+		printf("\n");
+		
+	} else {
+			
+		printf("\n"); 
+		printf("The action ha been canceled... \n");
+			
+		}
+		
+	return;
+		
+}
 
 //======================================================================
 
